@@ -1,0 +1,21 @@
+{
+  "name": "Facebook scraper",
+  "version": "1.0",
+  "description": "Extract info from facebooks marketplace",
+  "permissions": ["declarativeContent", "storage", "activeTab"],
+  "options_page": "options.html", 
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.facebook.com/*"],
+        "js": ["jquery-3.4.1.min.js", "stomp2.js","openscraper.js", "rabbit.js", "facebook.js"]
+    }
+  ],
+  "page_action": {
+    "default_popup": "popup.html"
+  },
+  "manifest_version": 2
+}
