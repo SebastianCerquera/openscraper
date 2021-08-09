@@ -11,17 +11,16 @@ class CsvExtractor extends openscraper.PostExtractor {
         super()
         
         this.filename = filename
-        this.headers = ["surface", "rooms", "baths", "garages", "price",
-                        "location", "description", "coordinates", "used", "url",
-                        "additional_info", "nature", "pictures"]
+        this.headers = ["title", "price", "initDate", "currentDate", "link"] 
 
-        fs.appendFile(filename, this.headers.join("|"), function (e) {
+        fs.appendFile(filename, this.headers.join("|") + "\n", function (e) {
             if (e) throw e;
         });
     }
 
     extract(message){
-        fs.appendFile(this.filename, message + "\n", function (e) {
+        var payload = `${message.title}|${message.price}|${message.initDate}|${message.currentDate}|${message.link}\n`
+        fs.appendFile(this.filename, payload, function (e) {
             if (e) {
                 console.log(e);
                 throw e;
@@ -95,7 +94,7 @@ class Driver {
     }
 
     saveContent(message){
-        this.extractor.extract(message)
+        this.extractor.extract(JSON.parse(message))
     }
 
     handleTermination(message){
