@@ -1,9 +1,12 @@
 
 // TODO: https://www.facebook.com/marketplace/bogota/propertyforsale/
 
+var openscraper = require('./openscraper.js')
+var rabbit = require('./rabbit.js')
+
 
 // https://www.facebook.com/groups/1asolucionesinmobiliarias
-class FacebookListing extends InfiniteListing{
+class FacebookListing extends openscraper.InfiniteListing{
     
     constructor(extractor){
         super(extractor, 15*60*1000)
@@ -40,7 +43,7 @@ class FacebookListing extends InfiniteListing{
     
 }
 
-class FacebookExtractor extends StompExtractor{
+class FacebookExtractor extends rabbit.StompExtractor{
 
     constructor(queueName){
         super(queueName)
@@ -60,7 +63,16 @@ class FacebookExtractor extends StompExtractor{
     }
 }
 
+/*
+return {
+    'FacebookListing': FacebookListing,
+    'FacebookExtractor': FacebookExtractor
+}
+*/
 
+
+
+/*
 console.log("Facebook scraper loaded")
 
 $(document).ready(function () {
@@ -78,3 +90,11 @@ $(document).ready(function () {
     }
 });
 
+*/
+
+
+(function(exports){
+   exports.FacebookListing = FacebookListing
+   exports.FacebookExtractor = FacebookExtractor
+    
+})(typeof exports === 'undefined'? this['facebook']={}: exports);

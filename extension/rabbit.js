@@ -1,4 +1,6 @@
 
+var openscraper = require('./openscraper.js')
+
 var rabbitClients = {};
 var rabbitClientBuilder = function(nameQuot, callback){
     if(rabbitClients[nameQuot] != undefined) return rabbitClients[nameQuot];
@@ -30,7 +32,7 @@ var rabbitClientBuilder = function(nameQuot, callback){
     return client;
 }
 
-class StompExtractor extends PostExtractor{
+class StompExtractor extends openscraper.PostExtractor{
 
     constructor(queueName){
         super()
@@ -50,3 +52,8 @@ class StompExtractor extends PostExtractor{
     }
     
 }
+
+(function(exports){
+   exports.StompExtractor = StompExtractor
+    
+})(typeof exports === 'undefined'? this['openscraper']={}: exports);

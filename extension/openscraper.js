@@ -80,6 +80,7 @@ class PostExtractor {
 
 (function(exports){
    exports.PageListing = PageListing
+   exports.InfiniteListing = InfiniteListing
    exports.PostExtractor = PostExtractor
     
 })(typeof exports === 'undefined'? this['openscraper']={}: exports);
