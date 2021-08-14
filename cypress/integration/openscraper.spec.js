@@ -3,12 +3,6 @@ const openscraper = require('../../extension/openscraper')
 describe('Page listings', () => {
 
     describe('Base class', () => {
-        var extractor = null
-        
-        beforeEach(() => {
-            extractor = new openscraper.PostExtractor()
-        })
-        
         it('The traverse should finish right away if there are no links', () => {
             // given
             var extractorStubName = "extractorStubName"
@@ -18,6 +12,7 @@ describe('Page listings', () => {
                 return false
             }
             
+            var extractor = new openscraper.PostExtractor()
             cy.stub(extractor, 'extract').as(extractorStubName)
             
             // when: 
@@ -31,13 +26,13 @@ describe('Page listings', () => {
         
         it('The traverse should find only tow results and then complete', () => {
             // given
-            var extractorStubName = "extractorStubName"
+            var extractorStubName = "extractorStubName2"
 
             // This tells the component that there are no links
             var counter = 0
             openscraper.PageListing.prototype.hasLinks = function(){
                 counter++
-                if(counter < 2)
+                if(counter < 3)
                     return true
                 return false
             }
@@ -46,6 +41,7 @@ describe('Page listings', () => {
                 return {}
             }
             
+            var extractor = new openscraper.PostExtractor()
             cy.stub(extractor, 'extract').as(extractorStubName)
             
             // when: 

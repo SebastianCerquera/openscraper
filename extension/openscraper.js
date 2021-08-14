@@ -19,13 +19,17 @@ class PageListing {
     }
 
     traverse(){
+        var extract = this.extractor.extract.bind(this)
+        var hasLinks = this.hasLinks.bind(this)
+        var tearDown = this.tearDown.bind(this)
+        var nextLink = this.nextLink.bind(this)
         this.loop = setInterval(function(){
-            if( this.hasLinks() ){
-                this.extractor.extract(this.nextLink())
+            if( hasLinks() ){
+                extract(nextLink())
             }else{
-                this.tearDown()
+                tearDown()
             }    
-        }.bind(this), this.throtling)
+        }, this.throtling)
     }
     
     scrollToLast(elements){
