@@ -70,7 +70,7 @@ class InfiniteListing extends PageListing{
         setTimeout(function(){
             if(size == this.entries.length)
                 this.completed = true
-        }, this.timeout)
+        }.bind(this), this.timeout)
         
         return !this.completed
     }
