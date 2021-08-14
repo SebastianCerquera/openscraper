@@ -11,27 +11,33 @@ class FacebookListing extends openscraper.InfiniteListing{
     constructor(extractor){
         super(extractor, 15*60*1000)
     }
-     
-    nextLink(){
-        // Scrolls down below to get new posts
-        if(this.entries.length > 0)
-            $('html, body').animate({
-                scrollTop: $(this.entries[this.entries.length - 1]).offset().top
-            });
 
-        // Updates the posts list
-        this.feed = $("[data-pagelet='GroupFeed']")
-        this.posts = this.feed.find(".du4w35lb.k4urcfbm.l9j0dhe7.sjgh65i0")
-        this.links = this.posts.find("a").filter(function(i, e){
+    findElements(){
+        var feed = $("[data-pagelet='GroupFeed']")
+        return feed.find(".du4w35lb.k4urcfbm.l9j0dhe7.sjgh65i0")
+    }
+    
+    elementsToLinks(elements){
+        return elements.find("a").filter(function(i, e){
             if (e.href == null)
                 return false
 
             return e.href.match("/commerce/listing/")
         })
+    }
+     
+    nextLink(){
+        var elements = this.findElements()
+        
+        // Updates the posts list
+        var links = this.elementsToLinks(elements)
+        
+        // Scrolls down below to get new posts
+        this.scrollToLast(elements)
 
         var i
-        for(i = this.entries.length; i < this.links.length; i++)
-            this.entries.push(this.links[i])
+        for(i = this.entries.length; i < links.length; i++)
+            this.entries.push(links[i])
 
         // Checks if there are no more entries
         this.counter++
@@ -62,36 +68,6 @@ class FacebookExtractor extends rabbit.StompExtractor{
         }))
     }
 }
-
-/*
-return {
-    'FacebookListing': FacebookListing,
-    'FacebookExtractor': FacebookExtractor
-}
-*/
-
-
-
-/*
-console.log("Facebook scraper loaded")
-
-$(document).ready(function () {
-    if (window.location.pathname.match(/\/groups\/.+/)) {
-          rabbitClientBuilder("facebookLinks", function(){
-              var scroll = new FacebookListing(new StompExtractor("facebookLinks"))
-              scroll.traverse()
-          })
-    }
-    else if (window.location.pathname.match(/\/commerce\/listing\/.+/)) {
-          rabbitClientBuilder("facebookPosts", function(){
-              var post = new FacebookExtractor("facebookPosts")
-              post.extract(null)
-          })
-    }
-});
-
-*/
-
 
 (function(exports){
    exports.FacebookListing = FacebookListing

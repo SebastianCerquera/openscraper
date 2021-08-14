@@ -13,15 +13,23 @@ class PageListing {
         this.entries = []
         this.extractor = extractor
     }
+ 
+    elementsToLinks(elements){
+        throw "Unsupported operation"
+    }
 
     traverse(){
-        setInterval(function(){
+        this.loop = setInterval(function(){
             if( this.hasLinks() ){
                 this.extractor.extract(this.nextLink())
             }else{
-                //TODO It is still missing to notify that there is no more content
+                this.tearDown()
             }    
         }.bind(this), this.throtling)
+    }
+    
+    scrollToLast(elements){
+        throw "Unsupported operation"
     }
     
     hasLinks(){
@@ -31,6 +39,15 @@ class PageListing {
     nextLink(){
         throw "Unsupported operation"
     }
+    
+    findElements(){
+        throw "Unsupported operation"
+    }
+
+    tearDown(){
+        clearInterval(this.loop)
+    }
+    
 }
 
 class InfiniteListing extends PageListing{
@@ -52,7 +69,20 @@ class InfiniteListing extends PageListing{
         }, this.timeout)
         
         return !this.completed
-    }    
+    }
+
+    scrollToLast(elements){
+        if(elements == null || elements.length == 0)
+            return
+        
+        var vierportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+        var viewportHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
+        var last = elements[elements.length - 1]
+        var bounds = last.getBoundingClientRect()
+
+        window.scrollTo(bounds.left, bounds.top)
+    }
 }
 
 class PaginationListing extends PageListing{
