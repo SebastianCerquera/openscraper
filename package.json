@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "npm run lint && npm run types",
-    "start": "serve --listen ${PORT:-8080}",
+    "start": "serve --listen ${PORT:-9090}",
     "dev": "npm start",
     "types": "tsc --noEmit",
     "test": "npm start & cypress run",
