@@ -3,34 +3,10 @@ const config = require('./config.json');
 
 const amqp = require('amqplib/callback_api');
 const CDP = require('chrome-remote-interface');
+
 const fs = require('fs');
+const utils = require('./utils.js');
 
-const openscraper = require('../extension/openscraper.js');
-
-class CsvExtractor extends openscraper.PostExtractor {
-    
-    constructor(filename){
-        super()
-        
-        this.filename = filename
-        this.headers = ["title", "price", "initDate", "currentDate", "link"] 
-
-        fs.appendFile(filename, this.headers.join("|") + "\n", function (e) {
-            if (e) throw e;
-        });
-    }
-
-    extract(message){
-        var payload = `${message.title}|${message.price}|${message.initDate}|${message.currentDate}|${message.link}\n`
-        fs.appendFile(this.filename, payload, function (e) {
-            if (e) {
-                console.log(e);
-                throw e;
-            }
-        });
-    }
-    
-}
 
 class Driver {
     
@@ -111,8 +87,9 @@ class Driver {
 }
 
 var driver = new Driver(
-    new CsvExtractor(
-        config.resultsFilename
+    new utils.CsvExtractor(
+        config.resultsFilename,
+        fs
     ),
     config.rabbitEndpoint,
     "facebookLinks",
