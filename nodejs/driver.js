@@ -39,8 +39,9 @@ class Driver {
         this.contentQueue = contentQueue
         this.filename = filename
 
-        this.initializeDriver()
         this.proccessed = new Set()
+        this.proccessing = []
+        this.initializeDriver()
     }
 
     initializeQueue(endpoint, queueName, callback){
@@ -66,17 +67,23 @@ class Driver {
         this.initializeQueue(this.queueEndpoint, this.urlsQueue, this.extractContent.bind(this))
         
         this.initializeQueue(this.queueEndpoint, this.contentQueue, this.saveContent.bind(this))
+
+        setInterval(function(){
+            var next = this.proccessing.pop()
+            if(next){
+                this.openNewTab(next);
+            }
+        }.bind(this), 100)
     }
 
     async openNewTab(url){
         var tab = await CDP.New();
         var client = await CDP({ tab });
-
         var { Page } = client;
         await Page.enable();
         await Page.navigate({ url });
         await Page.loadEventFired();
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        await new Promise(resolve => setTimeout(resolve, 3000));
         await CDP.Close({ id: tab.id })
     }
 
@@ -85,10 +92,7 @@ class Driver {
         var url = message.split("?")[0]
         
         if(!this.proccessed.has(url)){
-            setTimeout(function () {
-                this.openNewTab(url);
-            }.bind(this), 1000)
-
+            this.proccessing.push(url)
             this.proccessed.add(url)
         }
     }
