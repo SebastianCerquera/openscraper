@@ -64,6 +64,8 @@ class InfiniteListing extends PageListing{
         this.timeout = timeout
         this.completed = false
         this.counter = 0
+
+        this.position = 500
     }
     
     hasLinks(){ 
@@ -81,13 +83,38 @@ class InfiniteListing extends PageListing{
         if(elements == null || elements.length == 0)
             return
         
-        var vierportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-        var viewportHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+        var viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+        var viewportHeigth = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 
-        var last = elements[elements.length - 1]
-        var bounds = last.getBoundingClientRect()
+        //var bounds = elements.toArray().map((e) => e.getBoundingClientRect())
+        //var bottom = bounds.map((e) => e.top).sort()
+        //var last = bounds.filter((e) => e.top == bottom[bottom.length - 1]) 
 
-        window.scrollTo(bounds.left, bounds.top)
+        this.position = this.position + viewportHeigth
+        window.scrollTo(viewportWidth, this.position)
+    }
+
+    nextLinks(){
+        var elements = this.findElements()
+        
+        // Updates the posts list
+        var links = this.elementsToLinks(elements)
+        
+        // Scrolls down below to get new posts
+        this.scrollToLast(elements)
+
+        var i, results = []
+        for(i = this.entries.length; i < links.length; i++){
+            this.entries.push(links[i])
+            results.push(links[i])
+        }
+
+        // Checks if there are no more entries
+        this.counter++
+        if(this.counter >= this.entries.length)
+            this.completed = true
+
+        return results.map((element) => element.href)
     }
 }
 

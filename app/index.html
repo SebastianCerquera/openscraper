@@ -1,5 +1,7 @@
 <html>
   <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+     
     <style>
        .right {
          border-bottom: 200px solid red;
@@ -20,79 +22,39 @@
          background: grey;
        }
     </style>
+    <script> 
+      var counter = 0
+      var buildLoop = setInterval(function(){
+          $("body").append("<div class=\"wrapper " + counter + " \"><div class=\"left\"></div><div class=\"right\"></div></div>")
+          counter++
+          
+          if(counter > 100)
+              clearInterval(buildLoop)
+      }, 1000)
+    </script>
+    
+    <script src="../extension/openscraper.js"></script>
+    
+    <script>
+      var counter = 0
+      openscraper.PostExtractor.prototype.extract = function(){
+          counter++
+      }
+
+      var elements = [""]
+      openscraper.InfiniteListing.prototype.findElements = function(){
+          return elements
+      }
+      
+      openscraper.InfiniteListing.prototype.elementsToLinks = function(){
+          return elements
+      } 
+      
+      var extractor = new openscraper.PostExtractor()
+      var infiniteListing = new openscraper.InfiniteListing(extractor)
+      infiniteListing.traverse()
+    </script>
   </head>
   <body>
-    <div class="wrapper first">
-      <div class="left">
-      </div>
-      <div class="right">
-      </div>
-    </div>
-    <div class="wrapper">
-      <div class="left">
-      </div>
-      <div class="right">
-      </div>
-    </div>
-    <div class="wrapper">
-      <div class="left">
-      </div>
-      <div class="right">
-      </div>
-    </div>
-    <div class="wrapper">
-      <div class="left">
-      </div>
-      <div class="right">
-      </div>
-    </div>
-    <div class="wrapper">
-      <div class="left">
-      </div>
-      <div class="right">
-      </div>
-    </div>
-    <div class="wrapper">
-      <div class="left">
-      </div>
-      <div class="right">
-      </div>
-    </div>
-    <div class="wrapper">
-      <div class="left">
-      </div>
-      <div class="right">
-      </div>
-    </div>
-    <div class="wrapper">
-      <div class="left">
-      </div>
-      <div class="right">
-      </div>
-    </div>
-    <div class="wrapper">
-      <div class="left">
-      </div>
-      <div class="right">
-      </div>
-    </div>
-    <div class="wrapper">
-      <div class="left">
-      </div>
-      <div class="right">
-      </div>
-    </div>
-    <div class="wrapper">
-      <div class="left">
-      </div>
-      <div class="right">
-      </div>
-    </div>
-    <div class="wrapper">
-      <div class="left">
-      </div>
-      <div class="right last">
-      </div>
-    </div>
   </body>
 </html>
