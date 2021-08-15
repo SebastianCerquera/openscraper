@@ -1,4 +1,6 @@
 // -*- coding: utf-8 -*-
+const config = require('./config.json');
+
 const amqp = require('amqplib/callback_api');
 const CDP = require('chrome-remote-interface');
 const fs = require('fs');
@@ -108,14 +110,12 @@ class Driver {
 
 }
 
-var rabbitEndpoint = "amqp://admin:admin@localhost"
-var resultsFilename = "/tmp/refactor-results.csv"
 var driver = new Driver(
     new CsvExtractor(
-        resultsFilename
+        config.resultsFilename
     ),
-    rabbitEndpoint,
+    config.rabbitEndpoint,
     "facebookLinks",
     "facebookPosts",
-    resultsFilename
+    config.resultsFilename
 )

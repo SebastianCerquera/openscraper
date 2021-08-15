@@ -1,0 +1,4 @@
+{
+    "resultsFilename": "/home/turtle/Documentos/scraper/results.csv",
+    "rabbitEndpoint": "amqp://admin:admin@localhost"
+}
