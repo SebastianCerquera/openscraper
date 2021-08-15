@@ -87,7 +87,7 @@ class Driver {
         if(!this.proccessed.has(url)){
             setTimeout(function () {
                 this.openNewTab(url);
-            }.bind(this), 5000)
+            }.bind(this), 1000)
 
             this.proccessed.add(url)
         }

@@ -54,6 +54,6 @@ class StompExtractor extends openscraper.PostExtractor{
 }
 
 (function(exports){
-   exports.StompExtractor = StompExtractor
-    
-})(typeof exports === 'undefined'? this['openscraper']={}: exports);
+   exports.StompExtractor = StompExtractor,
+   exports.rabbitClientBuilder = rabbitClientBuilder
+})(typeof exports === 'undefined'? this['rabbit']={}: exports);

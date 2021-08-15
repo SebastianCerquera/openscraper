@@ -37,8 +37,8 @@ describe('Page listings', () => {
                 return false
             }
             
-            openscraper.PageListing.prototype.nextLink = function(){
-                return {}
+            openscraper.PageListing.prototype.nextLinks = function(){
+                return [1, 2]
             }
             
             var extractor = new openscraper.PostExtractor()

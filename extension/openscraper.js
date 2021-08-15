@@ -19,13 +19,15 @@ class PageListing {
     }
 
     traverse(){
-        var extract = this.extractor.extract.bind(this)
+        var extractor = this.extractor
         var hasLinks = this.hasLinks.bind(this)
         var tearDown = this.tearDown.bind(this)
-        var nextLink = this.nextLink.bind(this)
+        var nextLinks = this.nextLinks.bind(this)
         this.loop = setInterval(function(){
             if( hasLinks() ){
-                extract(nextLink())
+                nextLinks().forEach(function(link){
+                    extractor.extract.call(extractor, link)
+                })
             }else{
                 tearDown()
             }    
@@ -40,7 +42,7 @@ class PageListing {
         throw "Unsupported operation"
     }
     
-    nextLink(){
+    nextLinks(){
         throw "Unsupported operation"
     }
     

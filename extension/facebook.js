@@ -26,7 +26,7 @@ class FacebookListing extends openscraper.InfiniteListing{
         })
     }
      
-    nextLink(){
+    nextLinks(){
         var elements = this.findElements()
         
         // Updates the posts list
@@ -35,16 +35,18 @@ class FacebookListing extends openscraper.InfiniteListing{
         // Scrolls down below to get new posts
         this.scrollToLast(elements)
 
-        var i
-        for(i = this.entries.length; i < links.length; i++)
+        var i, results = []
+        for(i = this.entries.length; i < links.length; i++){
             this.entries.push(links[i])
+            results.push(links[i])
+        }
 
         // Checks if there are no more entries
         this.counter++
         if(this.counter >= this.entries.length)
             this.completed = true
 
-        return this.entries[this.counter - 1].href
+        return results.map((element) => element.href)
     }
     
 }
