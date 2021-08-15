@@ -64,7 +64,7 @@ class FacebookExtractor extends rabbit.StompExtractor{
         super.extract(JSON.stringify({
             'title': titledPanel[0].innerText,
             'price': titledPanel[1].innerText,
-            'initDate': titledPanel[4].innerText,
+            'initDate': titledPanel[2].innerText,
             'currentDate': new Date(),
             'link': window.location.href
         }))
